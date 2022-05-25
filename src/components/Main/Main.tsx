@@ -1,10 +1,31 @@
 import Card from '../Card/Card';
 
+type ArrPlaces = {
+  id: number;
+  name: string;
+  mark: string;
+  img: string;
+  price: number;
+  priceText: string;
+  type: string;
+}[];
+
+type Place = {
+  id: number;
+  name: string;
+  mark: string;
+  img: string;
+  price: number;
+  priceText: string;
+  type: string;
+};
+
 type MainProps = {
   numberOffers: number;
+  places: ArrPlaces;
 }
 
-function Main({numberOffers}: MainProps): JSX.Element {
+function Main({numberOffers, places}: MainProps): JSX.Element {
 
   return (
     <>
@@ -100,11 +121,13 @@ function Main({numberOffers}: MainProps): JSX.Element {
                   </ul>
                 </form>
                 <div className="cities__places-list places__list tabs__content">
+                  {places.map((place) =>
+                    <Card place={{place}} key={place.id}/>,
+                  )};
+                  {/* <Card/>
                   <Card/>
                   <Card/>
-                  <Card/>
-                  <Card/>
-                  <Card/>
+                  <Card/> */}
                   {/* <article className="cities__place-card place-card">
                     <div className="place-card__mark">
                       <span>Premium</span>

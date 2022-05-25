@@ -1,14 +1,27 @@
-function Card(): JSX.Element {
+
+type Place = {
+  id: number;
+  name: string;
+  mark: string;
+  img: string;
+  price: number;
+  priceText: string;
+  type: string;
+};
+
+function Card(place: Place): JSX.Element {
+  // eslint-disable-next-line no-console
+  console.log(place.name);
   return (
     <article className="cities__place-card place-card">
       <div className="place-card__mark">
-        <span>Premium</span>
+        <span>{place.mark}</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
           <img
             className="place-card__image"
-            src="img/apartment-01.jpg"
+            src={place.img}
             width="260"
             height="200"
             alt="Place image"
@@ -18,8 +31,8 @@ function Card(): JSX.Element {
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;120</b>
-            <span className="place-card__price-text">&#47;&nbsp;night</span>
+            <b className="place-card__price-value">&euro;{place.price}</b>
+            <span className="place-card__price-text">&#47;&nbsp;{place.priceText}</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
@@ -35,9 +48,9 @@ function Card(): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">Beautiful &amp; luxurious apartment at great location</a>
+          <a href="#">{place.name}</a>
         </h2>
-        <p className="place-card__type">Apartment</p>
+        <p className="place-card__type">{place.type}</p>
       </div>
     </article>
   );
