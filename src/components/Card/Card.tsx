@@ -9,11 +9,12 @@ type Place = {
   type: string;
 };
 
-function Card(place: Place): JSX.Element {
-  // eslint-disable-next-line no-console
-  console.log(place.name);
+function Card(props: any): JSX.Element {
+
+  const place: Place = props.place;
+
   return (
-    <article className="cities__place-card place-card">
+    <article onMouseOver={() => props.over(place.id)} className="cities__place-card place-card">
       <div className="place-card__mark">
         <span>{place.mark}</span>
       </div>

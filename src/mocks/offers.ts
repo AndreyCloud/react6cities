@@ -22,7 +22,7 @@ export const places: ArrPlaces = [
   {
     id: 2,
     name:'Wood and stone place',
-    mark: 'Premium',
+    mark: '',
     img: 'img/room.jpg',
     price: 80,
     priceText: 'night',
