@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 
 type Place = {
   id: number;
@@ -9,12 +10,17 @@ type Place = {
   type: string;
 };
 
-function Card(props: any): JSX.Element {
+type CardProps = {
+  place: Place,
+  over?: (id: number) => void,
+}
 
-  const place: Place = props.place;
+function Card({place, over}: CardProps): JSX.Element {
+
+  const pathId = `/offer/${  place.id}` ;
 
   return (
-    <article onMouseOver={() => props.over(place.id)} className="cities__place-card place-card">
+    <article onMouseOver={() => over?.(place.id)} className="cities__place-card place-card">
       <div className="place-card__mark">
         <span>{place.mark}</span>
       </div>
@@ -49,7 +55,7 @@ function Card(props: any): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{place.name}</a>
+          <Link to={pathId}>{place.name}</Link>
         </h2>
         <p className="place-card__type">{place.type}</p>
       </div>

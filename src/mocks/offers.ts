@@ -1,12 +1,4 @@
-type ArrPlaces = {
-    id: number;
-    name: string;
-    mark: string;
-    img: string;
-    price: number;
-    priceText: string;
-    type: string;
-}[];
+import { ArrPlaces } from '../types/types';
 
 
 export const places: ArrPlaces = [
@@ -18,6 +10,7 @@ export const places: ArrPlaces = [
     price: 120,
     priceText: 'night',
     type: 'Apartment',
+    favorite: true,
   },
   {
     id: 2,
@@ -27,6 +20,7 @@ export const places: ArrPlaces = [
     price: 80,
     priceText: 'night',
     type: 'Private room',
+    favorite: false,
   },
   {
     id: 3,
@@ -36,6 +30,7 @@ export const places: ArrPlaces = [
     price: 132,
     priceText: 'night',
     type: 'Apartment',
+    favorite: true,
   },
   {
     id: 4,
@@ -45,5 +40,6 @@ export const places: ArrPlaces = [
     price: 180,
     priceText: 'night',
     type: 'Apartment',
+    favorite: false,
   },
 ];

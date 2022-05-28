@@ -1,15 +1,7 @@
 import { useState } from 'react';
+import { ArrPlaces } from '../../types/types';
 import Card from '../Card/Card';
 
-type ArrPlaces = {
-  id: number;
-  name: string;
-  mark: string;
-  img: string;
-  price: number;
-  priceText: string;
-  type: string;
-}[];
 
 type MainProps = {
   numberOffers: number;
@@ -121,7 +113,7 @@ function Main({numberOffers, places}: MainProps): JSX.Element {
                 <div className="cities__places-list places__list tabs__content">
                   {places.map((plac) =>
                     <Card over={overMouse} place={plac} key={plac.id}/>,
-                  )};
+                  )}
                 </div>
               </section>
               <div className="cities__right-section">
