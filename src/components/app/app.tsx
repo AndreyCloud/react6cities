@@ -19,7 +19,7 @@ function App({auth, numberOffers, places}: AppProps): JSX.Element {
       <Route path="/" element= {<Main numberOffers={numberOffers} places={places} />}/>
       <Route path="/favorites" element= {auth ? <Favorites places={places}/> : <Login/>}/>
       <Route path="/login" element= {<Login />}/>
-      <Route path="/offer/:id" element= {<Offer />}/>
+      <Route path="/offer/:id" element= {<Offer places={places} />}/>
       <Route path="*" element= {<ErrorPage />}/>
     </Routes>
   );

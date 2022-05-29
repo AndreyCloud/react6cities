@@ -1,6 +1,28 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
+import { ArrPlaces } from '../../types/types';
 
-function Offer(): JSX.Element {
+type OfferProps = {
+  places: ArrPlaces
+}
+
+type Place = {
+  id: number;
+  name: string;
+  mark: string;
+  img: string;
+  price: number;
+  priceText: string;
+  type: string;
+  favorite: boolean;
+};
+
+function Offer({places}: OfferProps): JSX.Element {
+  const params = useParams();
+  const id = params.id;
+
+  const pl: Place | undefined = places.find((e) => String(e.id) === id);
+
   return (
     <div className="page">
       <header className="header">
@@ -57,11 +79,11 @@ function Offer(): JSX.Element {
           <div className="property__container container">
             <div className="property__wrapper">
               <div className="property__mark">
-                <span>Premium</span>
+                <span>{pl?.mark}</span>
               </div>
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                Beautiful &amp; luxurious studio at great location
+                  {pl?.name}
                 </h1>
                 <button className="property__bookmark-button button" type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
@@ -79,7 +101,7 @@ function Offer(): JSX.Element {
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                Apartment
+                  {pl?.type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
                 3 Bedrooms
@@ -89,8 +111,8 @@ function Offer(): JSX.Element {
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">&euro;120</b>
-                <span className="property__price-text">&nbsp;night</span>
+                <b className="property__price-value">&euro;{pl?.price}</b>
+                <span className="property__price-text">&nbsp;{pl?.priceText}</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>

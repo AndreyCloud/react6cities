@@ -8,6 +8,7 @@ type Place = {
   price: number;
   priceText: string;
   type: string;
+  favorite: boolean;
 };
 
 type CardProps = {
