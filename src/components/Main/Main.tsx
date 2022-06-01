@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrPlaces } from '../../types/types';
 import Card from '../Card/Card';
+import Map from '../Map/Map';
 
 
 type MainProps = {
@@ -16,6 +17,8 @@ function Main({numberOffers, places}: MainProps): JSX.Element {
   const overMouse = ((id: number): void => {
     setOver(id);
   });
+
+  const selected  = (places.find((place) => (place.id) === over))?.name;
 
   return (
     <>
@@ -117,7 +120,9 @@ function Main({numberOffers, places}: MainProps): JSX.Element {
                 </div>
               </section>
               <div className="cities__right-section">
-                <section className="cities__map map"></section>
+                <section className="cities__map map">
+                  <Map places={places} selected={selected}/>
+                </section>
               </div>
             </div>
           </div>
