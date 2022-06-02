@@ -1,4 +1,4 @@
-import { ArrPlaces } from '../types/types';
+import { ArrPlaces, ArrReviews } from '../types/types';
 
 
 export const places: ArrPlaces = [
@@ -96,9 +96,29 @@ export const places: ArrPlaces = [
   },
 ];
 
-// export const CITY: City = {
-//   title: 'Amsterdam',
-//   lat: 52.374,
-//   lng: 4.88969,
-//   zoom: 8,
-// };
+export const reviews: ArrReviews = [
+  {
+    comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    date: '2019-05-08T14:13:56.569Z',
+    id: 1,
+    rating: 4,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 4,
+      isPro: false,
+      name: 'Max',
+    },
+  },
+  {
+    comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    date: '2019-05-09T14:13:56.569Z',
+    id: 3,
+    rating: 3,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 4,
+      isPro: false,
+      name: 'Max',
+    },
+  },
+];

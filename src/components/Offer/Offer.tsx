@@ -1,9 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { ArrPlaces } from '../../types/types';
+import { ArrPlaces, ArrReviews } from '../../types/types';
+import ReviewsList from '../ReviewsList/ReviewsList';
 
 type OfferProps = {
-  places: ArrPlaces
+  places: ArrPlaces;
+  reviews: ArrReviews;
 }
 
 type Place = {
@@ -17,11 +19,18 @@ type Place = {
   favorite: boolean;
 };
 
-function Offer({places}: OfferProps): JSX.Element {
+function Offer({places, reviews}: OfferProps): JSX.Element {
   const params = useParams();
   const id = params.id;
+  const reviewsItem: ArrReviews = [];
 
   const pl: Place | undefined = places.find((e) => String(e.id) === id);
+
+  reviews.forEach((item) => {
+    if (String(item.id) === id) {
+      reviewsItem.push(item);
+    }
+  });
 
   return (
     <div className="page">
@@ -172,8 +181,9 @@ function Offer({places}: OfferProps): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
-                <ul className="reviews__list">
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsItem.length}</span></h2>
+                <ReviewsList reviewsItem={reviewsItem}/>
+                {/* <ul className="reviews__list">
                   <li className="reviews__item">
                     <div className="reviews__user user">
                       <div className="reviews__avatar-wrapper user__avatar-wrapper">
@@ -196,7 +206,7 @@ function Offer({places}: OfferProps): JSX.Element {
                       <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
                     </div>
                   </li>
-                </ul>
+                </ul> */}
                 <form className="reviews__form form" action="#" method="post">
                   <label className="reviews__label form__label" htmlFor="review">Your review</label>
                   <div className="reviews__rating-form form__rating">

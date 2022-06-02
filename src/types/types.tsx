@@ -21,6 +21,21 @@ export type ArrPlaces = {
   };
 }[];
 
+export type ArrReviews = Review[];
+
+export type Review = {
+  comment: string;
+  date: string;
+  id: number;
+  rating: number;
+  user: {
+    avatarUrl: string;
+    id: number;
+    isPro: boolean;
+    name: string;
+  };
+};
+
 export type City = {
   location: locationCity;
   name: string;
