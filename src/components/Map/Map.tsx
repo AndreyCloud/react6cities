@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   places: ArrPlaces;
-  selected: string | undefined;
+  selected?: string | undefined;
 };
 
 const defaultCustomIcon = new Icon({
@@ -48,7 +48,7 @@ function Map(props: MapProps): JSX.Element {
     }
   }, [map, places, selected]);
 
-  return <div style={{height: '100%'}} ref={mapRef}></div>;
+  return <div style={{height: '100%', maxWidth: '1144px', margin: 'auto'}} ref={mapRef}></div>;
 }
 
 export default Map;
