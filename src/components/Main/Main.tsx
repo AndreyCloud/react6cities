@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { ArrPlaces } from '../../types/types';
+import { ArrPlaces, Cities } from '../../types/types';
 import Card from '../Card/Card';
+import LocationsItem from '../LocationsItem/LocationsItem';
 import Map from '../Map/Map';
 
 
 type MainProps = {
   numberOffers: number;
   places: ArrPlaces;
+  cities: Cities;
 }
 
-function Main({numberOffers, places}: MainProps): JSX.Element {
+function Main({numberOffers, places, cities}: MainProps): JSX.Element {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [over, setOver] = useState(0);
@@ -60,7 +62,10 @@ function Main({numberOffers, places}: MainProps): JSX.Element {
           <div className="tabs">
             <section className="locations container">
               <ul className="locations__list tabs__list">
-                <li className="locations__item">
+                {cities.map((city) =>
+                  <LocationsItem key={city.name} city={city}/>,
+                )}
+                {/* <li className="locations__item">
                   <a className="locations__item-link tabs__item" href="#">
                     <span>Paris</span>
                   </a>
@@ -89,7 +94,7 @@ function Main({numberOffers, places}: MainProps): JSX.Element {
                   <a className="locations__item-link tabs__item" href="#">
                     <span>Dusseldorf</span>
                   </a>
-                </li>
+                </li> */}
               </ul>
             </section>
           </div>

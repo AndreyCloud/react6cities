@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import { Link } from 'react-router-dom';
 
 type Place = {
@@ -26,7 +27,7 @@ function Card({place, over}: CardProps): JSX.Element {
         <span>{place.mark}</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to={pathId}>
           <img
             className="place-card__image"
             src={place.img}
@@ -34,7 +35,7 @@ function Card({place, over}: CardProps): JSX.Element {
             height="200"
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
