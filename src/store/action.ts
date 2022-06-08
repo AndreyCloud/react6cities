@@ -1,6 +1,7 @@
-import { ActionType, CitySelectionActon } from '../types/action';
+import { ActionType, CitySelectionAction } from '../types/action';
 
 
-export const citySelection = (): CitySelectionActon => ({
+export const citySelection = (id: number): CitySelectionAction => ({
   type: ActionType.CitySelection,
+  payload: id,
 });

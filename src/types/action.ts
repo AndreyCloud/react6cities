@@ -2,8 +2,9 @@ export enum ActionType {
   CitySelection = 'citySelection',
 }
 
-export type CitySelectionActon = {
+export type CitySelectionAction = {
   type: ActionType.CitySelection,
+  payload: number,
 };
 
-export type Actions = CitySelectionActon;
+export type Actions = CitySelectionAction;

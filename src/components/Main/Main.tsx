@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { ArrPlaces, Cities } from '../../types/types';
 import Card from '../Card/Card';
 import LocationsItem from '../LocationsItem/LocationsItem';
@@ -12,6 +13,11 @@ type MainProps = {
 }
 
 function Main({numberOffers, places, cities}: MainProps): JSX.Element {
+
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const state = useSelector( (state) => state);
+  // eslint-disable-next-line no-console
+  console.log (state);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [over, setOver] = useState(0);
@@ -65,36 +71,6 @@ function Main({numberOffers, places, cities}: MainProps): JSX.Element {
                 {cities.map((city) =>
                   <LocationsItem key={city.name} city={city}/>,
                 )}
-                {/* <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Paris</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Cologne</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Brussels</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item tabs__item--active">
-                    <span>Amsterdam</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Hamburg</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Dusseldorf</span>
-                  </a>
-                </li> */}
               </ul>
             </section>
           </div>
