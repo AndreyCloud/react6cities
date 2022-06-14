@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+// import { useAppSelector } from '../../hooks/useApps';
 import { ArrPlaces, Cities } from '../../types/types';
 import Card from '../Card/Card';
 import LocationsItem from '../LocationsItem/LocationsItem';
@@ -14,12 +14,6 @@ type MainProps = {
 
 function Main({numberOffers, places, cities}: MainProps): JSX.Element {
 
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const state = useSelector( (state) => state);
-  // eslint-disable-next-line no-console
-  console.log (state);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [over, setOver] = useState(0);
 
   const overMouse = ((id: number): void => {

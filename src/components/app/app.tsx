@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/useApps';
+import { fetchHotels } from '../../store/citySlice';
 import { ArrPlaces, ArrReviews, Cities } from '../../types/types';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import Favorites from '../Favorites/Favorites';
@@ -15,6 +18,12 @@ type AppProps = {
 }
 
 function App({auth, numberOffers, places, reviews, cities}: AppProps): JSX.Element {
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchHotels(''));
+  }, [dispatch]);
 
   return (
     <Routes>
