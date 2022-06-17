@@ -1,8 +1,3 @@
-type locationCity = {
-  latitude: number;
-  longitude: number;
-  zoom: number;
-};
 
 export type ArrPlaces = {
   id: number;
@@ -37,7 +32,11 @@ export type Review = {
 };
 
 export type City = {
-  location: locationCity;
+  location: {
+    latitude: number;
+    longitude: number;
+    zoom: number;
+  };
   name: string;
 };
 
@@ -54,29 +53,29 @@ export type Cities = City[];
 export type Hotel = {
   bedrooms: number,
   city: {
-  location: {
-  latitude:number,
-  longitude:number,
-  zoom: number
-  },
-  name: string
+    location: {
+      latitude: number,
+      longitude: number,
+      zoom: number
+    },
+    name: string
   },
   description: string,
   goods: Array<string>,
   host: {
-  avatar_url: string,
-  id: number,
-  is_pro: boolean,
-  name: string
+    avatar_url: string,
+    id: number,
+    is_pro: boolean,
+    name: string
   },
   id: number,
   images: Array<string>,
   is_favorite: boolean,
   is_premium: boolean,
   location: {
-  latitude: number,
-  longitude: number,
-  zoom: number
+    latitude: number,
+    longitude: number,
+    zoom: number
   },
   max_adults: number,
   preview_image: string,
@@ -84,6 +83,6 @@ export type Hotel = {
   rating: number,
   title: string,
   type: string
-  };
+};
 
 export type Hotels = Hotel[];

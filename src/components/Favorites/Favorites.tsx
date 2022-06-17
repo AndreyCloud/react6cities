@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAppSelector } from '../../hooks/useApps';
 import { ArrPlaces } from '../../types/types';
 import Card from '../Card/Card';
 
@@ -7,6 +8,8 @@ type FavoritesProps = {
 }
 
 function Favorites({places}: FavoritesProps): JSX.Element {
+
+  const hotelsCity = useAppSelector ((state) => state.city.hotelsCity);
 
   return (
     <div className="page">
@@ -51,8 +54,8 @@ function Favorites({places}: FavoritesProps): JSX.Element {
                   </div>
                 </div>
                 <div className="favorites__places">
-                  {places.map((plac) =>
-                    plac.favorite===true && <Card  place={plac} key={plac.id}/>,
+                  {hotelsCity.map((plac) =>
+                    plac.is_favorite===true && <Card  hotel={plac} key={plac.id}/>,
                   )}
                 </div>
               </li>

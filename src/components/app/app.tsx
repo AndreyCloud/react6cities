@@ -27,10 +27,10 @@ function App({auth, numberOffers, places, reviews, cities}: AppProps): JSX.Eleme
 
   return (
     <Routes>
-      <Route path="/" element= {<Main numberOffers={numberOffers} places={places} cities={cities}/>}/>
+      <Route path="/" element= {<Main cities={cities}/>}/>
       <Route path="/favorites" element= {auth ? <Favorites places={places}/> : <Login/>}/>
       <Route path="/login" element= {<Login />}/>
-      <Route path="/offer/:id" element= {<Offer places={places} reviews={reviews}/>}/>
+      <Route path="/offer/:id" element= {<Offer reviews={reviews}/>}/>
       <Route path="*" element= {<ErrorPage />}/>
     </Routes>
   );

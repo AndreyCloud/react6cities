@@ -1,40 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrPlaces, ArrReviews } from '../../types/types';
+import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
+import { fetchHotelsNearby } from '../../store/citySlice';
+import { ArrReviews, Hotel } from '../../types/types';
 import Card from '../Card/Card';
 import Map from '../Map/Map';
 import ReviewsList from '../ReviewsList/ReviewsList';
 
 type OfferProps = {
-  places: ArrPlaces;
   reviews: ArrReviews;
 }
 
-type Place = {
-  id: number;
-  name: string;
-  mark: string;
-  img: string;
-  price: number;
-  priceText: string;
-  type: string;
-  favorite: boolean;
-};
 
-function Offer({places, reviews}: OfferProps): JSX.Element {
+function Offer({reviews}: OfferProps): JSX.Element {
+
+  const hotelsCity = useAppSelector ((state) => state.city.hotelsCity);
+  const hotelsNearby = useAppSelector ((state) => state.city.hotelsNearby);
+
+  const cityLoc = (hotelsCity.length !==0) ? hotelsCity[0].city : {
+    location: {
+      latitude: 48.85661,
+      longitude: 2.351499,
+      zoom: 13,
+    },
+    name: 'Paris',
+  };
+
   const params = useParams();
   const idItem = params.id;
   const reviewsItem: ArrReviews = [];
 
-  const pl: Place | undefined = places.find((e) => String(e.id) === idItem);
 
-  const [over, setOver] = useState(0);
+  const hotel: Hotel | undefined = hotelsCity.find((e) => String(e.id) === idItem);
 
-  const overMouse = ((id: React.SetStateAction<number>): void => {
-    setOver(id);
+  const hotelsMap = (hotel) ? [...hotelsNearby, hotel] : hotelsNearby;
+
+  // eslint-disable-next-line no-console
+  console.log(hotelsMap);
+
+  const premium = hotel?.is_premium ? 'Premium' : '';
+
+  const dispatch = useAppDispatch();
+
+  const selected = (() => {
+    if(idItem) {
+      return +idItem;
+    } else {
+      return 0 ;
+    }
   });
 
-  const selected  = (places.find((place) => (place.id) === over))?.name;
+  const ratingStars = (() => {
+    if(hotel?.rating) {
+      return `${String(hotel?.rating*20)  }%`;
+    } else {
+      return '50%';
+    }
+  });
+
 
   reviews.forEach((item) => {
     if (String(item.id) === idItem) {
@@ -51,10 +74,15 @@ function Offer({places, reviews}: OfferProps): JSX.Element {
     }
   }
 
-  useEffect(() => {
+  useEffect (() => {
+    dispatch(fetchHotelsNearby(String(selected())));
     smoothscroll();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idItem]);
+  }, [hotel]);
+
+  // useEffect(() => {
+  //   smoothscroll();
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [idItem]);
 
   return (
     <div className="page">
@@ -89,34 +117,21 @@ function Offer({places, reviews}: OfferProps): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/room.jpg" alt="Photo studio"/>
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio"/>
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-02.jpg" alt="Photo studio"/>
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-03.jpg" alt="Photo studio"/>
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/studio-01.jpg" alt="Photo studio"/>
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio"/>
-              </div>
+              {hotel?.images.slice(0, 6).map((img) => (
+                <div key={img + String(Math.random)} className="property__image-wrapper">
+                  <img className="property__image" src={img} alt="Photo studio"/>
+                </div>),
+              )}
             </div>
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
               <div className="property__mark">
-                <span>{pl?.mark}</span>
+                <span>{premium}</span>
               </div>
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                  {pl?.name}
+                  {hotel?.title}
                 </h1>
                 <button className="property__bookmark-button button" type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
@@ -127,80 +142,52 @@ function Offer({places, reviews}: OfferProps): JSX.Element {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{width: '80%'}}></span>
+                  <span style={{width: ratingStars()}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">4.8</span>
+                <span className="property__rating-value rating__value">{hotel?.rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {pl?.type}
+                  {hotel?.type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                3 Bedrooms
+                  {hotel?.bedrooms} bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-                Max 4 adults
+                Max {hotel?.max_adults} adults
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">&euro;{pl?.price}</b>
-                <span className="property__price-text">&nbsp;{pl?.priceText}</span>
+                <b className="property__price-value">&euro;{hotel?.price}</b>
+                <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  <li className="property__inside-item">
-                  Wi-Fi
-                  </li>
-                  <li className="property__inside-item">
-                  Washing machine
-                  </li>
-                  <li className="property__inside-item">
-                  Towels
-                  </li>
-                  <li className="property__inside-item">
-                  Heating
-                  </li>
-                  <li className="property__inside-item">
-                  Coffee machine
-                  </li>
-                  <li className="property__inside-item">
-                  Baby seat
-                  </li>
-                  <li className="property__inside-item">
-                  Kitchen
-                  </li>
-                  <li className="property__inside-item">
-                  Dishwasher
-                  </li>
-                  <li className="property__inside-item">
-                  Cabel TV
-                  </li>
-                  <li className="property__inside-item">
-                  Fridge
-                  </li>
+                  {hotel?.goods.map ((good) => (
+                    <li key={good} className="property__inside-item">
+                      {good}
+                    </li>),
+                  )}
                 </ul>
               </div>
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar"/>
+                    <img className="property__avatar user__avatar" src={hotel?.host.avatar_url} width="74" height="74" alt="Host avatar"/>
                   </div>
                   <span className="property__user-name">
-                  Angelina
+                    {hotel?.host.name}
                   </span>
                   <span className="property__user-status">
-                  Pro
+                    {hotel?.host.is_pro}
                   </span>
                 </div>
                 <div className="property__description">
                   <p className="property__text">
-                  A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                  </p>
-                  <p className="property__text">
-                  An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+                    {hotel?.description}
                   </p>
                 </div>
               </div>
@@ -257,15 +244,15 @@ function Offer({places, reviews}: OfferProps): JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            <Map places={places} selected={selected} />
+            <Map key={selected()} places={hotelsMap} selected={selected()} city={cityLoc}/>
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {places.map((plac) =>
-                <Card over={overMouse} place={plac} key={plac.id}/>,
+              {hotelsNearby.map((hotell) =>
+                <Card hotel={hotell} key={hotell.id}/>,
               )}
             </div>
           </section>

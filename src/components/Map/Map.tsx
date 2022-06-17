@@ -1,13 +1,14 @@
-import {useRef, useEffect} from 'react';
-import {Icon, Marker} from 'leaflet';
+import { useRef, useEffect } from 'react';
+import { Icon, Marker } from 'leaflet';
 import useMap from '../../hooks/useMap';
-import { ArrPlaces} from '../../types/types';
-import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
+import { City, Hotels } from '../../types/types';
+import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
-  places: ArrPlaces;
-  selected?: string | undefined;
+  places: Hotels;
+  selected?: number | undefined;
+  city: City;
 };
 
 const defaultCustomIcon = new Icon({
@@ -23,8 +24,7 @@ const currentCustomIcon = new Icon({
 });
 
 function Map(props: MapProps): JSX.Element {
-  const {places, selected} = props;
-  const city = places[0].location.city;
+  const { places, selected, city } = props;
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
@@ -39,7 +39,7 @@ function Map(props: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            selected !== undefined && point.name === selected
+            selected !== undefined && point.id === selected
               ? currentCustomIcon
               : defaultCustomIcon,
           )
@@ -48,7 +48,13 @@ function Map(props: MapProps): JSX.Element {
     }
   }, [map, places, selected]);
 
-  return <div style={{height: '100%', maxWidth: '1144px', margin: 'auto'}} ref={mapRef}></div>;
+  return (
+    <div
+      style={{ height: '100%', maxWidth: '1144px', margin: 'auto' }}
+      ref={mapRef}
+    >
+    </div>
+  );
 }
 
 export default Map;

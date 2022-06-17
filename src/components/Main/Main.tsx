@@ -1,18 +1,30 @@
 import { useState } from 'react';
+import { useAppSelector } from '../../hooks/useApps';
+// import citySlice from '../../store/citySlice';
 // import { useAppSelector } from '../../hooks/useApps';
-import { ArrPlaces, Cities } from '../../types/types';
+import { Cities } from '../../types/types';
 import Card from '../Card/Card';
 import LocationsItem from '../LocationsItem/LocationsItem';
 import Map from '../Map/Map';
 
 
 type MainProps = {
-  numberOffers: number;
-  places: ArrPlaces;
   cities: Cities;
 }
 
-function Main({numberOffers, places, cities}: MainProps): JSX.Element {
+function Main({cities}: MainProps): JSX.Element {
+
+  const hotelsCity = useAppSelector ((state) => state.city.hotelsCity);
+  const cityChoose = useAppSelector((state) => state.city.city);
+
+  const cityLoc = (hotelsCity.length !==0) ? hotelsCity[0].city : {
+    location: {
+      latitude: 48.85661,
+      longitude: 2.351499,
+      zoom: 13,
+    },
+    name: 'Paris',
+  };
 
   const [over, setOver] = useState(0);
 
@@ -20,7 +32,7 @@ function Main({numberOffers, places, cities}: MainProps): JSX.Element {
     setOver(id);
   });
 
-  const selected  = (places.find((place) => (place.id) === over))?.name;
+  const selected  = (hotelsCity.find((place) => (place.id) === over))?.id;
 
   return (
     <>
@@ -72,7 +84,7 @@ function Main({numberOffers, places, cities}: MainProps): JSX.Element {
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{numberOffers} places to stay in Amsterdam</b>
+                <b className="places__found">{hotelsCity.length} places to stay {cityChoose}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>
                   <span className="places__sorting-type" tabIndex={0}>
@@ -89,15 +101,15 @@ function Main({numberOffers, places, cities}: MainProps): JSX.Element {
                   </ul>
                 </form>
                 <div className="cities__places-list places__list tabs__content">
-                  {places.map((plac) =>
-                    <Card over={overMouse} place={plac} key={plac.id}/>,
+                  {hotelsCity.map((hotel) =>
+                    <Card over={overMouse} hotel={hotel} key={hotel.id}/>,
                   )}
                 </div>
               </section>
               <div className="cities__right-section">
-                <section className="cities__map map">
-                  <Map places={places} selected={selected}/>
-                </section>
+                <div className="cities__map map">
+                  <Map key={cityChoose} places={hotelsCity} selected={selected} city={cityLoc}/>
+                </div>
               </div>
             </div>
           </div>

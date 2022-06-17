@@ -1,36 +1,36 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import { Link } from 'react-router-dom';
+import { Hotel } from '../../types/types';
 
-type Place = {
-  id: number;
-  name: string;
-  mark: string;
-  img: string;
-  price: number;
-  priceText: string;
-  type: string;
-  favorite: boolean;
-};
 
 type CardProps = {
-  place: Place,
+  hotel: Hotel,
   over?: (id: number) => void,
 }
 
-function Card({place, over}: CardProps): JSX.Element {
+function Card({hotel, over}: CardProps): JSX.Element {
 
-  const pathId = `/offer/${  place.id}` ;
+  const pathId = `/offer/${  hotel.id}` ;
+  const premium = hotel.is_premium ? 'Premium' : '';
+
+  const ratingStars = (() => {
+    if(hotel?.rating) {
+      return `${String(hotel?.rating*20)  }%`;
+    } else {
+      return '50%';
+    }
+  });
 
   return (
-    <article onMouseOver={() => over?.(place.id)} className="cities__place-card place-card">
+    <article onMouseOver={() => over?.(hotel.id)} className="cities__place-card place-card">
       <div className="place-card__mark">
-        <span>{place.mark}</span>
+        <span>{premium}</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={pathId}>
           <img
             className="place-card__image"
-            src={place.img}
+            src={hotel.preview_image}
             width="260"
             height="200"
             alt="Place image"
@@ -40,8 +40,8 @@ function Card({place, over}: CardProps): JSX.Element {
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{place.price}</b>
-            <span className="place-card__price-text">&#47;&nbsp;{place.priceText}</span>
+            <b className="place-card__price-value">&euro;{hotel.price}</b>
+            <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
@@ -52,14 +52,14 @@ function Card({place, over}: CardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '80%' }}></span>
+            <span style={{ width: ratingStars() }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={pathId}>{place.name}</Link>
+          <Link to={pathId}>{hotel.title}</Link>
         </h2>
-        <p className="place-card__type">{place.type}</p>
+        <p className="place-card__type">{hotel.type}</p>
       </div>
     </article>
   );
