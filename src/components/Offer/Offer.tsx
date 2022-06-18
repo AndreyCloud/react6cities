@@ -14,10 +14,17 @@ type OfferProps = {
 
 function Offer({reviews}: OfferProps): JSX.Element {
 
-  const hotelsCity = useAppSelector ((state) => state.city.hotelsCity);
+  const hotels = useAppSelector ((state) => state.city.hotels);
   const hotelsNearby = useAppSelector ((state) => state.city.hotelsNearby);
 
-  const cityLoc = (hotelsCity.length !==0) ? hotelsCity[0].city : {
+  const params = useParams();
+  const idItem = params.id;
+  const reviewsItem: ArrReviews = [];
+
+
+  const hotel: Hotel | undefined = hotels.find((e) => String(e.id) === idItem);
+
+  const cityLoc = (hotel) ? hotel.city : {
     location: {
       latitude: 48.85661,
       longitude: 2.351499,
@@ -26,17 +33,7 @@ function Offer({reviews}: OfferProps): JSX.Element {
     name: 'Paris',
   };
 
-  const params = useParams();
-  const idItem = params.id;
-  const reviewsItem: ArrReviews = [];
-
-
-  const hotel: Hotel | undefined = hotelsCity.find((e) => String(e.id) === idItem);
-
   const hotelsMap = (hotel) ? [...hotelsNearby, hotel] : hotelsNearby;
-
-  // eslint-disable-next-line no-console
-  console.log(hotelsMap);
 
   const premium = hotel?.is_premium ? 'Premium' : '';
 
@@ -79,10 +76,8 @@ function Offer({reviews}: OfferProps): JSX.Element {
     smoothscroll();
   }, [hotel]);
 
-  // useEffect(() => {
-  //   smoothscroll();
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [idItem]);
+  // eslint-disable-next-line no-console
+  console.log(hotelsMap);
 
   return (
     <div className="page">
@@ -244,7 +239,7 @@ function Offer({reviews}: OfferProps): JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            <Map key={selected()} places={hotelsMap} selected={selected()} city={cityLoc}/>
+            <Map key={Math.random()} places={hotelsMap} selected={selected()} city={cityLoc}/>
           </section>
         </section>
         <div className="container">
