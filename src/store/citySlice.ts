@@ -1,5 +1,5 @@
 import { AnyAction, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Hotels } from '../types/types';
+import { Comments, Hotels } from '../types/types';
 
 type Town = string;
 
@@ -8,6 +8,7 @@ type CitiesState = {
   hotels: Hotels;
   hotelsCity: Hotels;
   hotelsNearby: Hotels;
+  comments: Comments;
   loading: boolean;
   error: string | null;
 }
@@ -17,6 +18,7 @@ const initialState: CitiesState = {
   hotels: [],
   hotelsCity: [],
   hotelsNearby: [],
+  comments: [],
   loading: false,
   error: null,
 };
@@ -50,6 +52,20 @@ export const fetchHotelsNearby = createAsyncThunk<Hotels, string, {rejectValue: 
     return data;
   },
 );
+export const fetchHotelComments = createAsyncThunk<Comments, string, {rejectValue: string}>(
+  'cities/fetchHotelComments',
+  async (id, {rejectWithValue}) => {
+    const response = await fetch(`https://8.react.pages.academy/six-cities/comments/${id}`);
+
+    if(!response.ok) {
+      return rejectWithValue('Server Error!');
+    }
+
+    const data = await response.json();
+
+    return data;
+  },
+);
 
 const citySlice = createSlice({
   name: 'cities',
@@ -71,15 +87,23 @@ const citySlice = createSlice({
         state.loading = false;
         state.hotelsCity = state.hotels.filter( (v) => v.city.name === state.city);
       })
-
       .addCase(fetchHotelsNearby.pending, (state) => {
+        state.hotelsNearby = [];
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchHotelsNearby.fulfilled, (state, action) => {
         state.hotelsNearby = action.payload;
         state.loading = false;
-        // state.hotelsNearby = state.hotels.filter( (v) => v.city.name === state.city);
+      })
+      .addCase(fetchHotelComments.pending, (state) => {
+        state.comments = [];
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchHotelComments.fulfilled, (state, action) => {
+        state.comments = action.payload;
+        state.loading = false;
       })
 
       .addMatcher(isError, (state, action: PayloadAction<string>) => {

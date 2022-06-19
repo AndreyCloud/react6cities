@@ -16,6 +16,7 @@ function Main({cities}: MainProps): JSX.Element {
 
   const hotelsCity = useAppSelector ((state) => state.city.hotelsCity);
   const cityChoose = useAppSelector((state) => state.city.city);
+  const error = useAppSelector((state) => state.city.error);
 
   const cityLoc = (hotelsCity.length !==0) ? hotelsCity[0].city : {
     location: {
@@ -84,6 +85,7 @@ function Main({cities}: MainProps): JSX.Element {
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
+                <h3>{error}</h3>
                 <b className="places__found">{hotelsCity.length} places to stay {cityChoose}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>

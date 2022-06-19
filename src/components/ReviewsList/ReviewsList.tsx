@@ -1,18 +1,35 @@
-import React from 'react';
-import { ArrReviews } from '../../types/types';
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
+import { fetchHotelComments } from '../../store/citySlice';
 import ReviewsItem from '../ReviewsItem/ReviewsItem';
 
 type ReviewsListProps = {
-  reviewsItem: ArrReviews
-}
+  idItem: string;
+};
 
-function ReviewsList({reviewsItem}: ReviewsListProps): JSX.Element {
+function ReviewsList({ idItem }: ReviewsListProps): JSX.Element {
+  const comments = useAppSelector((state) => state.city.comments);
+  const error = useAppSelector((state) => state.city.error);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchHotelComments(idItem));
+  }, [idItem]);
+
   return (
-    <ul className="reviews__list">
-      {reviewsItem.map((review) =>
-        <ReviewsItem rev={review} key={review.date} />,
-      )}
-    </ul>
+    <>
+      <h2 className="reviews__title">
+        <h3>{error}</h3>
+        Reviews &middot;{' '}
+        <span className="reviews__amount">{comments.length}</span>
+      </h2>
+      <ul className="reviews__list">
+        {comments.map((review) => (
+          <ReviewsItem rev={review} key={review.date} />
+        ))}
+      </ul>
+    </>
   );
 }
 

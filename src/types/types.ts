@@ -86,3 +86,18 @@ export type Hotel = {
 };
 
 export type Hotels = Hotel[];
+
+export type Comment = {
+  comment: string;
+  date: string;
+  id: number;
+  rating: number;
+  user: {
+    avatar_url: string;
+    id: number;
+    isPro: boolean;
+    name: string;
+  };
+};
+
+export type Comments = Comment[];

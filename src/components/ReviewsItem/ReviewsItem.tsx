@@ -1,14 +1,22 @@
 import React from 'react';
-import { Review } from '../../types/types';
+import { Comment } from '../../types/types';
 
-type ReviewsItemProps = {
-  rev: Review
+type CommentItemProps = {
+  rev: Comment
 }
 
 
-function ReviewsItem({rev}: ReviewsItemProps): JSX.Element {
+function ReviewsItem({rev}: CommentItemProps): JSX.Element {
 
   const date = new Date(rev.date).toDateString();
+
+  const ratingStars = (() => {
+    if(rev.rating) {
+      return `${String(rev.rating*20)  }%`;
+    } else {
+      return '50%';
+    }
+  });
 
   // eslint-disable-next-line no-console
   console.log(date);
@@ -18,7 +26,7 @@ function ReviewsItem({rev}: ReviewsItemProps): JSX.Element {
       <li className="reviews__item">
         <div className="reviews__user user">
           <div className="reviews__avatar-wrapper user__avatar-wrapper">
-            <img className="reviews__avatar user__avatar" src={rev.user.avatarUrl} width="54" height="54" alt="Reviews avatar"/>
+            <img className="reviews__avatar user__avatar" src={rev.user.avatar_url} width="54" height="54" alt="Reviews avatar"/>
           </div>
           <span className="reviews__user-name">
             {rev.user.name}
@@ -27,7 +35,7 @@ function ReviewsItem({rev}: ReviewsItemProps): JSX.Element {
         <div className="reviews__info">
           <div className="reviews__rating rating">
             <div className="reviews__stars rating__stars">
-              <span style={{width: '80%'}}></span>
+              <span style={{width: ratingStars()}}></span>
               <span className="visually-hidden">Rating</span>
             </div>
           </div>

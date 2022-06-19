@@ -16,9 +16,10 @@ function Offer({reviews}: OfferProps): JSX.Element {
 
   const hotels = useAppSelector ((state) => state.city.hotels);
   const hotelsNearby = useAppSelector ((state) => state.city.hotelsNearby);
+  const error = useAppSelector((state) => state.city.error);
 
   const params = useParams();
-  const idItem = params.id;
+  const idItem = (params.id) ? params.id : '';
   const reviewsItem: ArrReviews = [];
 
 
@@ -72,12 +73,11 @@ function Offer({reviews}: OfferProps): JSX.Element {
   }
 
   useEffect (() => {
-    dispatch(fetchHotelsNearby(String(selected())));
+    dispatch(fetchHotelsNearby(idItem));
+    // dispatch(fetchHotelComments(idItem));
     smoothscroll();
   }, [hotel]);
 
-  // eslint-disable-next-line no-console
-  console.log(hotelsMap);
 
   return (
     <div className="page">
@@ -187,8 +187,7 @@ function Offer({reviews}: OfferProps): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsItem.length}</span></h2>
-                <ReviewsList reviewsItem={reviewsItem}/>
+                <ReviewsList idItem={idItem}/>
                 <form className="reviews__form form" action="#" method="post">
                   <label className="reviews__label form__label" htmlFor="review">Your review</label>
                   <div className="reviews__rating-form form__rating">
@@ -246,6 +245,7 @@ function Offer({reviews}: OfferProps): JSX.Element {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
+              <h3>{error}</h3>
               {hotelsNearby.map((hotell) =>
                 <Card hotel={hotell} key={hotell.id}/>,
               )}
