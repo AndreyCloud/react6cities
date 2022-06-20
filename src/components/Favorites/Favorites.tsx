@@ -1,13 +1,13 @@
 import React from 'react';
 import { useAppSelector } from '../../hooks/useApps';
-import { ArrPlaces } from '../../types/types';
+// import { ArrPlaces } from '../../types/types';
 import Card from '../Card/Card';
 
-type FavoritesProps = {
-  places: ArrPlaces;
-}
+// type FavoritesProps = {
+//   places: ArrPlaces;
+// }
 
-function Favorites({places}: FavoritesProps): JSX.Element {
+function Favorites(): JSX.Element {
 
   const hotelsCity = useAppSelector ((state) => state.city.hotelsCity);
 

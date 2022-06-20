@@ -2,26 +2,22 @@ import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { fetchHotelsNearby } from '../../store/citySlice';
-import { ArrReviews, Hotel } from '../../types/types';
+import { Hotel } from '../../types/types';
 import Card from '../Card/Card';
+import ErrorPage from '../ErrorPage/ErrorPage';
 import Map from '../Map/Map';
 import ReviewsList from '../ReviewsList/ReviewsList';
 
-type OfferProps = {
-  reviews: ArrReviews;
-}
 
-
-function Offer({reviews}: OfferProps): JSX.Element {
+function Offer(): JSX.Element {
 
   const hotels = useAppSelector ((state) => state.city.hotels);
   const hotelsNearby = useAppSelector ((state) => state.city.hotelsNearby);
   const error = useAppSelector((state) => state.city.error);
+  const maxId = hotels.length;
 
   const params = useParams();
   const idItem = (params.id) ? params.id : '';
-  const reviewsItem: ArrReviews = [];
-
 
   const hotel: Hotel | undefined = hotels.find((e) => String(e.id) === idItem);
 
@@ -57,12 +53,6 @@ function Offer({reviews}: OfferProps): JSX.Element {
   });
 
 
-  reviews.forEach((item) => {
-    if (String(item.id) === idItem) {
-      reviewsItem.push(item);
-    }
-  });
-
   function smoothscroll(){
     const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
     if (currentScroll > 0) {
@@ -74,11 +64,15 @@ function Offer({reviews}: OfferProps): JSX.Element {
 
   useEffect (() => {
     dispatch(fetchHotelsNearby(idItem));
-    // dispatch(fetchHotelComments(idItem));
     smoothscroll();
   }, [hotel]);
 
 
+  if(+idItem > maxId) {
+    return (
+      <ErrorPage/>
+    );
+  }
   return (
     <div className="page">
       <header className="header">

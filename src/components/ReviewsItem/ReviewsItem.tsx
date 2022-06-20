@@ -18,9 +18,6 @@ function ReviewsItem({rev}: CommentItemProps): JSX.Element {
     }
   });
 
-  // eslint-disable-next-line no-console
-  console.log(date);
-
   return (
     <div>
       <li className="reviews__item">

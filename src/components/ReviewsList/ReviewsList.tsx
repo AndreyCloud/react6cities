@@ -20,13 +20,13 @@ function ReviewsList({ idItem }: ReviewsListProps): JSX.Element {
   return (
     <>
       <h2 className="reviews__title">
-        <h3>{error}</h3>
+        {error}
         Reviews &middot;{' '}
         <span className="reviews__amount">{comments.length}</span>
       </h2>
       <ul className="reviews__list">
         {comments.map((review) => (
-          <ReviewsItem rev={review} key={review.date} />
+          <ReviewsItem rev={review} key={Math.random()} />
         ))}
       </ul>
     </>
