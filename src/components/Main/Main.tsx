@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/useApps';
 import { Cities } from '../../types/types';
 import Card from '../Card/Card';
+import FilterPlaces from '../FilterPlaces';
 import LocationsItem from '../LocationsItem/LocationsItem';
 import Map from '../Map/Map';
 
@@ -13,9 +14,25 @@ type MainProps = {
 
 function Main({cities}: MainProps): JSX.Element {
 
-  const hotelsCity = useAppSelector ((state) => state.city.hotelsCity);
+  const hotelsCitys = useAppSelector ((state) => state.city.hotelsCity);
   const cityChoose = useAppSelector((state) => state.city.city);
   const error = useAppSelector((state) => state.city.error);
+  const sorted = useAppSelector((state) => state.city.sort);
+
+  const hotelsCitySort = ((sort: string | null) => {
+    if(sort === 'price') {
+      return [...hotelsCitys].sort((a, b) => a.price - b.price);
+    }
+    if (sort === '-price') {
+      return  [...hotelsCitys].sort((a, b) => b.price - a.price);
+    }
+    if (sort === 'rating') {
+      return [...hotelsCitys].sort((a, b) => b.rating - a.rating);
+    }
+    return hotelsCitys;
+  });
+
+  const hotelsCity = hotelsCitySort(sorted);
 
   const cityLoc = (hotelsCity.length !==0) ? hotelsCity[0].city : {
     location: {
@@ -86,21 +103,22 @@ function Main({cities}: MainProps): JSX.Element {
                 <h2 className="visually-hidden">Places</h2>
                 <h3>{error}</h3>
                 <b className="places__found">{hotelsCity.length} places to stay {cityChoose}</b>
-                <form className="places__sorting" action="#" method="get">
+                <FilterPlaces/>
+                {/* <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>
-                  <span className="places__sorting-type" tabIndex={0}>
+                  <span onClick={() => selectedFilter()} className="places__sorting-type" tabIndex={0}>
                   Popular
                     <svg className="places__sorting-arrow" width="7" height="4">
                       <use xlinkHref="#icon-arrow-select"></use>
                     </svg>
                   </span>
-                  <ul className="places__options places__options--custom places__options--opened">
+                  <ul className={filterClass}>
                     <li className="places__option places__option--active" tabIndex={0}>Popular</li>
                     <li className="places__option" tabIndex={0}>Price: low to high</li>
                     <li className="places__option" tabIndex={0}>Price: high to low</li>
                     <li className="places__option" tabIndex={0}>Top rated first</li>
                   </ul>
-                </form>
+                </form> */}
                 <div className="cities__places-list places__list tabs__content">
                   {hotelsCity.map((hotel) =>
                     <Card over={overMouse} hotel={hotel} key={hotel.id}/>,

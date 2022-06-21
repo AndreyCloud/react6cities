@@ -9,6 +9,7 @@ type CitiesState = {
   hotelsCity: Hotels;
   hotelsNearby: Hotels;
   comments: Comments;
+  sort: string | null;
   loading: boolean;
   error: string | null;
 }
@@ -19,6 +20,7 @@ const initialState: CitiesState = {
   hotelsCity: [],
   hotelsNearby: [],
   comments: [],
+  sort: null,
   loading: false,
   error: null,
 };
@@ -75,6 +77,9 @@ const citySlice = createSlice({
       state.city = action.payload;
       state.hotelsCity = state.hotels.filter( (v) => v.city.name === state.city);
     },
+    selectSort(state,action) {
+      state.sort = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -117,6 +122,6 @@ function isError (action: AnyAction) {
   return action.type.endsWith('rejected');
 }
 
-export const {chooseCity} = citySlice.actions;
+export const {chooseCity, selectSort} = citySlice.actions;
 
 export default citySlice.reducer;
