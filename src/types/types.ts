@@ -101,3 +101,12 @@ export type Comment = {
 };
 
 export type Comments = Comment[];
+
+export type User = {
+  avatarUrl: string | null,
+  email: string | null,
+  id: number | null,
+  isPro: boolean | null,
+  name: string | null,
+  token: string | null,
+}
