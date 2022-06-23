@@ -1,39 +1,72 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { User } from '../types/types';
+import { AnyAction, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Login, User } from '../types/types';
 
 
-const initialState: User = {
-  avatarUrl: null,
-  email: null,
-  id: null,
-  isPro: null,
-  name: null,
-  token: null,
+export const fetchLogin = createAsyncThunk<User, Login, {rejectValue: string}>(
+  'user/fetchLogin',
+  async (user, {rejectWithValue}) => {
+
+    const response = await fetch('https://8.react.pages.academy/six-cities/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+
+    });
+
+    if(!response.ok) {
+      return rejectWithValue('Server Error!');
+    }
+
+    const data = await response.json() as User;
+
+    return data;
+  },
+);
+
+type UserState = {
+  user: User,
+  error: string | null,
+  loading: boolean,
+}
+
+
+const initialState: UserState = {
+  user: {} as User,
+  error: null,
+  loading: false,
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser(state, action) {
-      state.avatarUrl = action.payload.avatar_url;
-      state.email = action.payload.email;
-      state.id = action.payload.id;
-      state.isPro = action.payload.is_pro;
-      state.name = action.payload.name;
-      state.token = action.payload.token;
-    },
     removeUser(state) {
-      state.avatarUrl = null;
-      state.email = null;
-      state.id = null;
-      state.isPro = null;
-      state.name = null;
-      state.token = null;
+      state.user = {} as User;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchLogin.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(fetchLogin.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      })
+
+      .addMatcher(isError, (state, action: PayloadAction<string>) => {
+        state.error = action.payload;
+        state.loading = false;
+      });
   },
 });
 
-export const {setUser, removeUser} = userSlice.actions;
+function isError (action: AnyAction) {
+  return action.type.endsWith('rejected');
+}
+
+export const {removeUser} = userSlice.actions;
 
 export default userSlice.reducer;

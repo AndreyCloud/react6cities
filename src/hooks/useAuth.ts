@@ -2,14 +2,9 @@ import { useAppSelector } from './useApps';
 
 export function useAuth() {
 
-  const {avatarUrl, email, id, isPro, name, token} = useAppSelector((state) => state.user);
+  const {token} = useAppSelector((state) => state.user.user);
 
   return {
     isAuth: !!token,
-    avatarUrl,
-    email,
-    id,
-    isPro,
-    name,
   };
 }

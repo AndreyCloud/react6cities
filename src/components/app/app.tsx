@@ -16,8 +16,6 @@ type AppProps = {
 
 function App({auth, cities}: AppProps): JSX.Element {
 
-  // const maxId = useAppSelector ((state) => state.city.hotels.length);
-
 
   const dispatch = useAppDispatch();
 

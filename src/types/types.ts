@@ -103,10 +103,15 @@ export type Comment = {
 export type Comments = Comment[];
 
 export type User = {
-  avatarUrl: string | null,
+  avatar_url: string | null,
   email: string | null,
   id: number | null,
-  isPro: boolean | null,
+  is_pro: boolean | null,
   name: string | null,
   token: string | null,
+}
+
+export type Login = {
+  email: string;
+  password: string;
 }

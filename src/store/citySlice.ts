@@ -43,7 +43,7 @@ export const fetchHotels = createAsyncThunk<Hotels, unknown, {rejectValue: strin
 export const fetchHotelsNearby = createAsyncThunk<Hotels, string, {rejectValue: string}>(
   'cities/fetchHotelsNearby',
   async (id, {rejectWithValue}) => {
-    const response = await fetch(`https://8.react.pages.academy/six-cities/hotels/${id}/nearby`);
+    const response: Response = await fetch(`https://8.react.pages.academy/six-cities/hotels/${id}/nearby`);
 
     if(!response.ok) {
       return rejectWithValue('Server Error!');

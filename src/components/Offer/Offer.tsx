@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { fetchHotelsNearby } from '../../store/citySlice';
 import { Hotel } from '../../types/types';
 import Card from '../Card/Card';
 import ErrorPage from '../ErrorPage/ErrorPage';
+import Header from '../Header/Header';
 import Map from '../Map/Map';
 import ReviewsList from '../ReviewsList/ReviewsList';
 
@@ -75,7 +76,8 @@ function Offer(): JSX.Element {
   }
   return (
     <div className="page">
-      <header className="header">
+      <Header/>
+      {/* <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
@@ -101,7 +103,7 @@ function Offer(): JSX.Element {
             </nav>
           </div>
         </div>
-      </header>
+      </header> */}
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">

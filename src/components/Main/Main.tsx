@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/useApps';
 import { Cities } from '../../types/types';
 import Card from '../Card/Card';
 import FilterPlaces from '../FilterPlaces';
+import Header from '../Header/Header';
 import LocationsItem from '../LocationsItem/LocationsItem';
 import Map from '../Map/Map';
 
@@ -58,7 +58,8 @@ function Main({cities}: MainProps): JSX.Element {
       </div>
 
       <div className="page page--gray page--main">
-        <header className="header">
+        <Header/>
+        {/* <header className="header">
           <div className="container">
             <div className="header__wrapper">
               <div className="header__left">
@@ -84,7 +85,7 @@ function Main({cities}: MainProps): JSX.Element {
               </nav>
             </div>
           </div>
-        </header>
+        </header> */}
 
         <main className="page__main page__main--index">
           <h1 className="visually-hidden">Cities</h1>

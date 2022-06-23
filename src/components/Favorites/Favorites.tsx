@@ -2,6 +2,7 @@ import React from 'react';
 import { useAppSelector } from '../../hooks/useApps';
 // import { ArrPlaces } from '../../types/types';
 import Card from '../Card/Card';
+import Header from '../Header/Header';
 
 // type FavoritesProps = {
 //   places: ArrPlaces;
@@ -13,7 +14,8 @@ function Favorites(): JSX.Element {
 
   return (
     <div className="page">
-      <header className="header">
+      <Header/>
+      {/* <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
@@ -39,7 +41,7 @@ function Favorites(): JSX.Element {
             </nav>
           </div>
         </div>
-      </header>
+      </header> */}
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">
