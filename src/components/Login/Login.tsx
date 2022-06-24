@@ -67,8 +67,6 @@ function Login(): JSX.Element {
               </div>
               <button
                 className="login__submit form__submit button"
-                // type="submit"
-                // onClick={(e) => sendLogin}
               >
                   Sign in
               </button>
