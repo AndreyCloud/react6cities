@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/useApps';
+import { removeUser } from '../../store/userSlice';
 
 type HeaderNavInProps = {
   email:  string | null;
@@ -7,6 +9,13 @@ type HeaderNavInProps = {
 }
 
 function HeaderNavOut({email, avatarUrl}: HeaderNavInProps): JSX.Element {
+
+  const dispatch = useAppDispatch();
+
+  const SignOut = () => {
+    dispatch(removeUser());
+  };
+
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
@@ -19,9 +28,9 @@ function HeaderNavOut({email, avatarUrl}: HeaderNavInProps): JSX.Element {
           </Link>
         </li>
         <li className="header__nav-item">
-          <a className="header__nav-link" href="#">
-            <span className="header__signout">Sign out</span>
-          </a>
+          <Link to='/'>
+            <span onClick={SignOut} className="header__signout">Sign out</span>
+          </Link>
         </li>
       </ul>
     </nav>

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/useApps';
+import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { fetchLogin } from '../../store/userSlice';
 
 function Login(): JSX.Element {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const error = useAppSelector((state) => state.user.error);
 
   const user = {email, password};
 
@@ -15,9 +16,6 @@ function Login(): JSX.Element {
   function sendLogin(e: { preventDefault: () => void; })  {
 
     e.preventDefault();
-
-    // eslint-disable-next-line no-console
-    console.log(user);
 
     dispatch(fetchLogin(user));
   }
@@ -71,6 +69,9 @@ function Login(): JSX.Element {
                   Sign in
               </button>
             </form>
+            <div style={{marginTop: 20, color: 'red'}}>
+              {error}
+            </div>
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">

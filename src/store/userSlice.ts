@@ -16,7 +16,7 @@ export const fetchLogin = createAsyncThunk<User, Login, {rejectValue: string}>(
     });
 
     if(!response.ok) {
-      return rejectWithValue('Server Error!');
+      return rejectWithValue('Login or password is not correct!');
     }
 
     const data = await response.json() as User;
