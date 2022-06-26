@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
-import { fetchHotelsNearby } from '../../store/citySlice';
+import { fetchFavorite, fetchFavoriteChange, fetchFavoriteDelete, fetchHotelsNearby } from '../../store/citySlice';
 import { Hotel } from '../../types/types';
 import Card from '../Card/Card';
 import ErrorPage from '../ErrorPage/ErrorPage';
@@ -21,6 +21,10 @@ function Offer(): JSX.Element {
   const idItem = (params.id) ? params.id : '';
 
   const hotel: Hotel | undefined = hotels.find((e) => String(e.id) === idItem);
+  const token: string = useAppSelector((state) => state.user.user.token);
+  const id = String(hotel?.id);
+  const idToken = {id, token};
+  const classFavorite = (hotel?.is_favorite) ? ('property__bookmark-button--active button') : ('property__bookmark-button button');
 
   const cityLoc = (hotel) ? hotel.city : {
     location: {
@@ -74,6 +78,15 @@ function Offer(): JSX.Element {
       <ErrorPage/>
     );
   }
+
+  async function handleFavorite() {
+    if(hotel?.is_favorite) {
+      await dispatch(fetchFavoriteDelete(idToken));
+      dispatch(fetchFavorite(token));
+    } else {
+      dispatch(fetchFavoriteChange(idToken));
+    }}
+
   return (
     <div className="page">
       <Header/>
@@ -97,7 +110,7 @@ function Offer(): JSX.Element {
                 <h1 className="property__name">
                   {hotel?.title}
                 </h1>
-                <button className="property__bookmark-button button" type="button">
+                <button onClick={handleFavorite} className={classFavorite} type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>

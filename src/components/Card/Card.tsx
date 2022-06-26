@@ -1,5 +1,6 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
+import { fetchFavorite, fetchFavoriteChange, fetchFavoriteDelete } from '../../store/citySlice';
 import { Hotel } from '../../types/types';
 
 
@@ -12,6 +13,12 @@ function Card({hotel, over}: CardProps): JSX.Element {
 
   const pathId = `/offer/${  hotel.id}` ;
   const premium = hotel.is_premium ? 'Premium' : '';
+  const favorite = hotel.is_favorite;
+  const token: string = useAppSelector((state) => state.user.user.token);
+  const id = String(hotel.id);
+  const idToken = {id, token};
+
+  const classFavorite = (favorite) ? ('place-card__bookmark-button--active button') : ('place-card__bookmark-button button');
 
   const ratingStars = (() => {
     if(hotel?.rating) {
@@ -20,6 +27,16 @@ function Card({hotel, over}: CardProps): JSX.Element {
       return '50%';
     }
   });
+
+  const dispatch = useAppDispatch();
+
+  async function handleFavorite() {
+    if(favorite) {
+      await dispatch(fetchFavoriteDelete(idToken));
+      dispatch(fetchFavorite(token));
+    } else {
+      dispatch(fetchFavoriteChange(idToken));
+    }}
 
   return (
     <article onMouseOver={() => over?.(hotel.id)} className="cities__place-card place-card">
@@ -43,7 +60,7 @@ function Card({hotel, over}: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{hotel.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
+          <button onClick={handleFavorite} className={classFavorite} type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

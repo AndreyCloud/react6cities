@@ -108,7 +108,7 @@ export type User = {
   id: number | null,
   is_pro: boolean | null,
   name: string | null,
-  token: string | null,
+  token: string ,
 }
 
 export type Login = {

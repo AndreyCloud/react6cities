@@ -55,7 +55,6 @@ const userSlice = createSlice({
         state.user = action.payload;
         state.loading = false;
       })
-
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.payload;
         state.loading = false;

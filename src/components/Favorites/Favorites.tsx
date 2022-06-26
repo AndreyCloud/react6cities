@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/useApps';
+import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
+import { fetchFavorite } from '../../store/citySlice';
 // import { ArrPlaces } from '../../types/types';
 import Card from '../Card/Card';
 import Header from '../Header/Header';
@@ -11,7 +12,27 @@ import Header from '../Header/Header';
 
 function Favorites(): JSX.Element {
 
-  const hotelsCity = useAppSelector ((state) => state.city.hotelsCity);
+  const token = useAppSelector((state) => state.user.user.token);
+  const error = useAppSelector((state) => state.user.error);
+
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFavorite(token));
+  }, []);
+
+  const hotelsFavorite = useAppSelector ((state) => state.city.favorite);
+
+  if(error) {
+    return (
+      <Link to='/'>
+        <div style={{width: '320px', margin: '100px auto', fontSize: '24px', textAlign: 'center', color: 'red'}}>
+          {error}
+        </div>
+      </Link>
+    );}
+
 
   return (
     <div className="page">
@@ -30,7 +51,7 @@ function Favorites(): JSX.Element {
                   </div>
                 </div>
                 <div className="favorites__places">
-                  {hotelsCity.map((plac) =>
+                  {hotelsFavorite.map((plac) =>
                     plac.is_favorite===true && <Card  hotel={plac} key={plac.id}/>,
                   )}
                 </div>

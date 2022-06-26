@@ -7,17 +7,20 @@ function Login(): JSX.Element {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const error = useAppSelector((state) => state.user.error);
+
 
   const user = {email, password};
 
   const dispatch = useAppDispatch();
+
+  const error = useAppSelector((state) => state.user.error);
 
   function sendLogin(e: { preventDefault: () => void; })  {
 
     e.preventDefault();
 
     dispatch(fetchLogin(user));
+
   }
 
   return (

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/useApps';
+import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { useAuth } from '../../hooks/useAuth';
-import { fetchHotels } from '../../store/citySlice';
+import { fetchFavorite, fetchHotels } from '../../store/citySlice';
 import { Cities } from '../../types/types';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import Favorites from '../Favorites/Favorites';
@@ -17,12 +17,16 @@ type AppProps = {
 function App({cities}: AppProps): JSX.Element {
 
   const auth = useAuth().isAuth;
+  const token = useAppSelector((state) => state.user.user.token);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchHotels(''));
-  }, [dispatch]);
+    if(auth) {
+      dispatch(fetchFavorite(token));
+    }
+  }, [dispatch, token]);
 
 
   return (

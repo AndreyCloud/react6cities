@@ -8,8 +8,8 @@ function HeaderNavIn(): JSX.Element {
       <ul className="header__nav-list">
         <li className="header__nav-item user">
           <Link to="/favorites" className="header__nav-link header__nav-link--profile" >
-            {/* <div className="header__avatar-wrapper user__avatar-wrapper">
-            </div> */}
+            <div className="header__avatar-wrapper user__avatar-wrapper">
+            </div>
           </Link>
         </li>
         <li className="header__nav-item">
