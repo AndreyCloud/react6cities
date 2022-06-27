@@ -2,13 +2,8 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { fetchFavorite } from '../../store/citySlice';
-// import { ArrPlaces } from '../../types/types';
 import Card from '../Card/Card';
 import Header from '../Header/Header';
-
-// type FavoritesProps = {
-//   places: ArrPlaces;
-// }
 
 function Favorites(): JSX.Element {
 

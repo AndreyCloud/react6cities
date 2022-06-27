@@ -6,6 +6,7 @@ import FilterPlaces from '../FilterPlaces';
 import Header from '../Header/Header';
 import LocationsItem from '../LocationsItem/LocationsItem';
 import Map from '../Map/Map';
+import MainEmpty from './MainEmpty';
 
 
 type MainProps = {
@@ -33,7 +34,6 @@ function Main({cities}: MainProps): JSX.Element {
   });
 
   const hotelsCity = hotelsCitySort(sorted);
-
   const cityLoc = (hotelsCity.length !==0) ? hotelsCity[0].city : {
     location: {
       latitude: 48.85661,
@@ -50,6 +50,10 @@ function Main({cities}: MainProps): JSX.Element {
   });
 
   const selected  = (hotelsCity.find((place) => (place.id) === over))?.id;
+
+  if(hotelsCity.length === 0) {
+    return <MainEmpty cities={cities}/>;
+  }
 
   return (
     <>
