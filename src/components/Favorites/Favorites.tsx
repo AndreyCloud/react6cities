@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { fetchFavorite } from '../../store/citySlice';
-import Card from '../Card/Card';
+// import Card from '../Card/Card';
+import CardFavorite from '../Card/CardFavorite';
 import Header from '../Header/Header';
 
 function Favorites(): JSX.Element {
@@ -47,7 +48,7 @@ function Favorites(): JSX.Element {
                 </div>
                 <div className="favorites__places">
                   {hotelsFavorite.map((plac) =>
-                    plac.is_favorite===true && <Card  hotel={plac} key={plac.id}/>,
+                    plac.is_favorite===true && <CardFavorite  hotel={plac} key={plac.id}/>,
                   )}
                 </div>
               </li>

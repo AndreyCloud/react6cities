@@ -48,8 +48,11 @@ function Main({cities}: MainProps): JSX.Element {
   const overMouse = ((id: number): void => {
     setOver(id);
   });
+  const outMouse = ((): void => {
+    setOver(0);
+  });
 
-  const selected  = (hotelsCity.find((place) => (place.id) === over))?.id;
+  const selected  = over !== 0 ? (hotelsCity.find((place) => (place.id) === over))?.id : 0;
 
   if(hotelsCity.length === 0) {
     return <MainEmpty cities={cities}/>;
@@ -83,7 +86,7 @@ function Main({cities}: MainProps): JSX.Element {
                 <FilterPlaces/>
                 <div className="cities__places-list places__list tabs__content">
                   {hotelsCity.map((hotel) =>
-                    <Card over={overMouse} hotel={hotel} key={hotel.id}/>,
+                    <Card over={overMouse} out={outMouse} hotel={hotel} key={hotel.id}/>,
                   )}
                 </div>
               </section>

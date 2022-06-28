@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { fetchFavorite, fetchFavoriteChange, fetchFavoriteDelete, fetchHotelsNearby } from '../../store/citySlice';
 import { Hotel } from '../../types/types';
@@ -24,7 +24,7 @@ function Offer(): JSX.Element {
   const token: string = useAppSelector((state) => state.user.user.token);
   const id = String(hotel?.id);
   const idToken = {id, token};
-  const classFavorite = (hotel?.is_favorite) ? ('property__bookmark-button--active button') : ('property__bookmark-button button');
+  const classFavorite = (hotel?.is_favorite) ? ('property__bookmark-button button property__bookmark-button--active') : ('property__bookmark-button button');
 
   const cityLoc = (hotel) ? hotel.city : {
     location: {
@@ -37,9 +37,12 @@ function Offer(): JSX.Element {
 
   const hotelsMap = (hotel) ? [...hotelsNearby, hotel] : hotelsNearby;
 
-  const premium = hotel?.is_premium ? 'Premium' : '';
+  const premium = hotel?.is_premium && <div className="property__mark"><span>Premium</span></div> ;
 
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+  const goLogin = () => navigate('/login');
 
   const selected = (() => {
     if(idItem) {
@@ -56,7 +59,6 @@ function Offer(): JSX.Element {
       return '50%';
     }
   });
-
 
   function smoothscroll(){
     const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
@@ -80,12 +82,16 @@ function Offer(): JSX.Element {
   }
 
   async function handleFavorite() {
-    if(hotel?.is_favorite) {
-      await dispatch(fetchFavoriteDelete(idToken));
-      dispatch(fetchFavorite(token));
-    } else {
-      dispatch(fetchFavoriteChange(idToken));
-    }}
+    if(token) {
+      if(hotel?.is_favorite) {
+        await dispatch(fetchFavoriteDelete(idToken));
+        dispatch(fetchFavorite(token));
+      } else {
+        dispatch(fetchFavoriteChange(idToken));
+      }
+    }
+    goLogin();
+  }
 
   return (
     <div className="page">
@@ -96,16 +102,14 @@ function Offer(): JSX.Element {
             <div className="property__gallery">
               {hotel?.images.slice(0, 6).map((img) => (
                 <div key={img + String(Math.random)} className="property__image-wrapper">
-                  <img className="property__image" src={img} alt="Photo studio"/>
+                  <img className="property__image" src={img} alt="studio"/>
                 </div>),
               )}
             </div>
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-              <div className="property__mark">
-                <span>{premium}</span>
-              </div>
+              {premium}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
                   {hotel?.title}

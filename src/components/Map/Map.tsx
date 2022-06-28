@@ -2,7 +2,6 @@ import { useRef, useEffect } from 'react';
 import { Icon, Marker } from 'leaflet';
 import useMap from '../../hooks/useMap';
 import { City, Hotels } from '../../types/types';
-import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
@@ -12,15 +11,15 @@ type MapProps = {
 };
 
 const defaultCustomIcon = new Icon({
-  iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: '/img/pin.svg',
+  iconSize: [27, 40],
+  iconAnchor: [13, 40],
 });
 
 const currentCustomIcon = new Icon({
-  iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: '/img/pin-active.svg',
+  iconSize: [27, 40],
+  iconAnchor: [13, 40],
 });
 
 function Map(props: MapProps): JSX.Element {
