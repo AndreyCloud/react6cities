@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { fetchFavorite } from '../../store/citySlice';
-// import Card from '../Card/Card';
+import { Hotels } from '../../types/types';
 import CardFavorite from '../Card/CardFavorite';
 import Header from '../Header/Header';
 
@@ -20,6 +20,16 @@ function Favorites(): JSX.Element {
 
   const hotelsFavorite = useAppSelector ((state) => state.city.favorite);
 
+  function Unique(arr: Hotels) {
+    const uniq: string[] = [];
+    arr.forEach((element) => {
+      uniq.push(element.city.name);
+    });
+    return Array.from(new Set(uniq));
+  }
+
+  const citiesFavorite: string[] = Unique(hotelsFavorite);
+
   if(error) {
     return (
       <Link to='/'>
@@ -29,7 +39,6 @@ function Favorites(): JSX.Element {
       </Link>
     );}
 
-
   return (
     <div className="page">
       <Header/>
@@ -38,31 +47,21 @@ function Favorites(): JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Amsterdam</span>
-                    </a>
+              {citiesFavorite.map((city) => (
+                <li key={city} className="favorites__locations-items">
+                  <div className="favorites__locations locations locations--current">
+                    <div className="locations__item">
+                      <Link to='/' className="locations__item-link">
+                        <span>{city}</span>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-                <div className="favorites__places">
-                  {hotelsFavorite.map((plac) =>
-                    plac.is_favorite===true && <CardFavorite  hotel={plac} key={plac.id}/>,
-                  )}
-                </div>
-              </li>
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Cologne</span>
-                    </a>
+                  <div className="favorites__places">
+                    {hotelsFavorite.map((plac) =>
+                      plac.city.name===city && <CardFavorite  hotel={plac} key={plac.id}/>,
+                    )}
                   </div>
-                </div>
-                <div className="favorites__places">
-                </div>
-              </li>
+                </li>))}
             </ul>
           </section>
         </div>
