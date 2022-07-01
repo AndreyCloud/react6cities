@@ -115,3 +115,14 @@ export type Login = {
   email: string;
   password: string;
 }
+
+export type CommentPost = {
+  comment: string,
+  rating: number,
+}
+export type CommentPostId = {
+  comment: string,
+  rating: number,
+  id: string,
+  token: string,
+}

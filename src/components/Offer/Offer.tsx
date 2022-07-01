@@ -175,7 +175,7 @@ function Offer(): JSX.Element {
               </div>
               <section className="property__reviews reviews">
                 <ReviewsList idItem={idItem}/>
-                { token && <ReviewPost/>}
+                { token && <ReviewPost id={idItem} token={token}/>}
               </section>
             </div>
           </div>

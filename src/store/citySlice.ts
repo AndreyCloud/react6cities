@@ -1,5 +1,5 @@
 import { AnyAction, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Comments, Hotel, Hotels } from '../types/types';
+import { CommentPostId, Comments, Hotel, Hotels } from '../types/types';
 
 type Town = string;
 
@@ -67,6 +67,30 @@ export const fetchHotelComments = createAsyncThunk<Comments, string, {rejectValu
 
     const data = await response.json();
 
+    return data;
+  },
+);
+
+export const fetchAddComment = createAsyncThunk<Comments, CommentPostId, {rejectValue: string}>(
+  'user/fetchAddComment',
+  async (commentPostId, {rejectWithValue}) => {
+
+    const {comment, rating, token, id} = commentPostId;
+    const commentPost = {comment, rating};
+
+    const response = await fetch(`https://8.react.pages.academy/six-cities/comments/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Token': token,
+      },
+      body: JSON.stringify(commentPost),
+    });
+
+    if(!response.ok) {
+      return rejectWithValue('Server Error!');
+    }
+    const data = await response.json() as Comments;
     return data;
   },
 );
@@ -220,6 +244,15 @@ const citySlice = createSlice({
         hotels.filter((item) => item.id !== hotel.id);
         state.hotels = state.hotels.map((elem) => elem.id !== hotel.id ? elem : hotel);
         state.hotelsCity = state.hotels.filter( (v) => v.city.name === state.city);
+        state.loading = false;
+      })
+      .addCase(fetchAddComment.pending, (state) => {
+        state.comments = [];
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAddComment.fulfilled, (state, action) => {
+        state.comments = action.payload;
         state.loading = false;
       })
 
