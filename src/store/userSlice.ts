@@ -20,6 +20,7 @@ export const fetchLogin = createAsyncThunk<User, Login, {rejectValue: string}>(
     }
 
     const data = await response.json() as User;
+    localStorage.setItem('user', JSON.stringify(data));
 
     return data;
   },
@@ -42,6 +43,12 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    // userlocalSt(state) {
+    //   const {user} = state;
+    //   // eslint-disable-next-line no-console
+    //   console.log(user);
+    //   localStorage.setItem('user', JSON.stringify(user));
+    // },
     removeUser(state) {
       state.user = {} as User;
     },
