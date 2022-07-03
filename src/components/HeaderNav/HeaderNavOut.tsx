@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/useApps';
+import { fetchHotels } from '../../store/citySlice';
 import { removeUser, userlocalStDelete } from '../../store/userSlice';
 
 type HeaderNavInProps = {
@@ -15,6 +16,7 @@ function HeaderNavOut({email, avatarUrl}: HeaderNavInProps): JSX.Element {
   const SignOut = () => {
     dispatch(removeUser());
     dispatch(userlocalStDelete());
+    dispatch(fetchHotels(''));
   };
 
   return (

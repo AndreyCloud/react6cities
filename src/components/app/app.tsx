@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { useAuth } from '../../hooks/useAuth';
 import { fetchFavorite, fetchHotels } from '../../store/citySlice';
-import { userlocalSt } from '../../store/userSlice';
+import { fetchLoginToken } from '../../store/userSlice';
 import { Cities } from '../../types/types';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import Favorites from '../Favorites/Favorites';
@@ -22,19 +22,24 @@ function App({cities}: AppProps): JSX.Element {
   const token = useAppSelector((state) => state.user.user.token);
   const favorites = useAppSelector((state) => state.city.favorite);
   const favorPab = (favorites.length === 0) ? <FavoritesEmpty/> : <Favorites/>;
+  const tokenLogin = localStorage.getItem('user');
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchHotels(''));
+    if (!auth) {
+      dispatch(fetchHotels(''));
+    }
+    if (tokenLogin !== null) {
+      dispatch(fetchLoginToken(tokenLogin));
+    }
+  }, []);
+
+  useEffect(() => {
     if(auth) {
       dispatch(fetchFavorite(token));
     }
-  }, [dispatch, token]);
-
-  useEffect(() => {
-    dispatch(userlocalSt());
-  }, [dispatch]);
+  }, [auth]);
 
   return (
     <Routes>

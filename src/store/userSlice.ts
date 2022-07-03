@@ -20,13 +20,36 @@ export const fetchLogin = createAsyncThunk<User, Login, { rejectValue: string }>
     }
 
     const data = await response.json() as User;
-    localStorage.setItem('user', JSON.stringify(data));
+    localStorage.setItem('user', JSON.stringify(data.token));
+
+    return data;
+  },
+);
+export const fetchLoginToken = createAsyncThunk<User, string, { rejectValue: string }>(
+  'user/fetchLoginToken',
+  async (token, { rejectWithValue }) => {
+
+    const response = await fetch('https://8.react.pages.academy/six-cities/login', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Token': token,
+      },
+    });
+
+    if (!response.ok) {
+      return rejectWithValue('Authorization failed!');
+    }
+
+    const data = await response.json() as User;
+    localStorage.setItem('user', JSON.stringify(data.token));
 
     return data;
   },
 );
 
 type UserState = {
+  token: string,
   user: User,
   error: string | null,
   loading: boolean,
@@ -34,6 +57,7 @@ type UserState = {
 
 
 const initialState: UserState = {
+  token: '',
   user: {} as User,
   error: null,
   loading: false,
@@ -43,14 +67,9 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    userlocalSt(state) {
-      const user = localStorage.getItem('user');
-      if (user !== null) {
-        state.user = JSON.parse(user);
-      }
-    },
     userlocalStDelete(state){
       localStorage.removeItem('user');
+      state.token = '';
     },
     removeUser(state) {
       state.user = {} as User;
@@ -65,6 +84,13 @@ const userSlice = createSlice({
         state.user = action.payload;
         state.loading = false;
       })
+      .addCase(fetchLoginToken.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(fetchLoginToken.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.payload;
         state.loading = false;
@@ -76,6 +102,6 @@ function isError(action: AnyAction) {
   return action.type.endsWith('rejected');
 }
 
-export const { removeUser, userlocalSt, userlocalStDelete } = userSlice.actions;
+export const { removeUser, userlocalStDelete } = userSlice.actions;
 
 export default userSlice.reducer;
