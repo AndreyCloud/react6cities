@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { useAuth } from '../../hooks/useAuth';
 import { fetchFavorite, fetchHotels } from '../../store/citySlice';
+import { userlocalSt } from '../../store/userSlice';
 import { Cities } from '../../types/types';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import Favorites from '../Favorites/Favorites';
@@ -31,6 +32,9 @@ function App({cities}: AppProps): JSX.Element {
     }
   }, [dispatch, token]);
 
+  useEffect(() => {
+    dispatch(userlocalSt());
+  }, [dispatch]);
 
   return (
     <Routes>

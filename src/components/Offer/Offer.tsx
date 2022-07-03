@@ -90,8 +90,9 @@ function Offer(): JSX.Element {
       } else {
         dispatch(fetchFavoriteChange(idToken));
       }
+    } else {
+      goLogin();
     }
-    goLogin();
   }
 
   return (

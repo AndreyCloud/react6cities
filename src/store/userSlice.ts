@@ -2,9 +2,9 @@ import { AnyAction, createAsyncThunk, createSlice, PayloadAction } from '@reduxj
 import { Login, User } from '../types/types';
 
 
-export const fetchLogin = createAsyncThunk<User, Login, {rejectValue: string}>(
+export const fetchLogin = createAsyncThunk<User, Login, { rejectValue: string }>(
   'user/fetchLogin',
-  async (user, {rejectWithValue}) => {
+  async (user, { rejectWithValue }) => {
 
     const response = await fetch('https://8.react.pages.academy/six-cities/login', {
       method: 'POST',
@@ -15,7 +15,7 @@ export const fetchLogin = createAsyncThunk<User, Login, {rejectValue: string}>(
 
     });
 
-    if(!response.ok) {
+    if (!response.ok) {
       return rejectWithValue('Login or password is not correct!');
     }
 
@@ -43,12 +43,15 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    // userlocalSt(state) {
-    //   const {user} = state;
-    //   // eslint-disable-next-line no-console
-    //   console.log(user);
-    //   localStorage.setItem('user', JSON.stringify(user));
-    // },
+    userlocalSt(state) {
+      const user = localStorage.getItem('user');
+      if (user !== null) {
+        state.user = JSON.parse(user);
+      }
+    },
+    userlocalStDelete(state){
+      localStorage.removeItem('user');
+    },
     removeUser(state) {
       state.user = {} as User;
     },
@@ -69,10 +72,10 @@ const userSlice = createSlice({
   },
 });
 
-function isError (action: AnyAction) {
+function isError(action: AnyAction) {
   return action.type.endsWith('rejected');
 }
 
-export const {removeUser} = userSlice.actions;
+export const { removeUser, userlocalSt, userlocalStDelete } = userSlice.actions;
 
 export default userSlice.reducer;
