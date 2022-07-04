@@ -211,7 +211,6 @@ const citySlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchFavorite.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(fetchFavorite.fulfilled, (state, action) => {
@@ -223,7 +222,6 @@ const citySlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchFavoriteChange.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(fetchFavoriteChange.fulfilled, (state, action) => {
@@ -235,7 +233,6 @@ const citySlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchFavoriteDelete.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(fetchFavoriteDelete.fulfilled, (state, action) => {

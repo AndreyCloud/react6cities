@@ -4,6 +4,7 @@ import { Cities } from '../../types/types';
 import Card from '../Card/Card';
 import FilterPlaces from '../FilterPlaces';
 import Header from '../Header/Header';
+import Loading from '../Loading/Loading';
 import LocationsItem from '../LocationsItem/LocationsItem';
 import Map from '../Map/Map';
 import MainEmpty from './MainEmpty';
@@ -19,6 +20,7 @@ function Main({cities}: MainProps): JSX.Element {
   const cityChoose = useAppSelector((state) => state.city.city);
   const error = useAppSelector((state) => state.city.error);
   const sorted = useAppSelector((state) => state.city.sort);
+  const loading = useAppSelector((state) => state.city.loading);
 
   const hotelsCitySort = ((sort: string | null) => {
     if(sort === 'price') {
@@ -53,6 +55,10 @@ function Main({cities}: MainProps): JSX.Element {
   });
 
   const selected  = over !== 0 ? (hotelsCity.find((place) => (place.id) === over))?.id : 0;
+
+  if(loading) {
+    return <Loading/>;
+  }
 
   if(hotelsCity.length === 0) {
     return <MainEmpty cities={cities}/>;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { fetchLogin } from '../../store/userSlice';
 
@@ -66,16 +66,16 @@ function Login(): JSX.Element {
 
 
   const user = {email, password};
-
   const dispatch = useAppDispatch();
-
   const error = useAppSelector((state) => state.user.error);
+  const navigate = useNavigate();
+  const goMain = () => navigate('/');
 
   function sendLogin(e: { preventDefault: () => void; })  {
 
     e.preventDefault();
-
     dispatch(fetchLogin(user));
+    goMain();
 
   }
 
