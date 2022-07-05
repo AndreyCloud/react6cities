@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
+import { chooseCity } from '../../store/citySlice';
 import { fetchLogin } from '../../store/userSlice';
+import { Cities } from '../../types/types';
 
-function Login(): JSX.Element {
+type LoginProps = {
+  cities: Cities;
+}
+
+function Login({cities}: LoginProps): JSX.Element {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,6 +18,9 @@ function Login(): JSX.Element {
   const [emailError, setEmailError] = useState('Email cannot be empty!');
   const [passwordlError, setPasswordError] = useState('Password cannot be empty!');
   const [formValid, setFormValid] = useState(false);
+
+  const index = Math.floor(Math.random() * ((cities.length-1) + 1)) ;
+  const town = cities[index];
 
   useEffect(() => {
     if (emailError || passwordlError) {
@@ -72,11 +81,13 @@ function Login(): JSX.Element {
   const goMain = () => navigate('/');
 
   function sendLogin(e: { preventDefault: () => void; })  {
-
     e.preventDefault();
     dispatch(fetchLogin(user));
     goMain();
+  }
 
+  function SetCity(city: string) {
+    dispatch(chooseCity(city));
   }
 
   return (
@@ -137,8 +148,8 @@ function Login(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link to="/" className="locations__item-link" >
-                <span>Amsterdam</span>
+              <Link to="/" onClick={() => SetCity(town.name)} className="locations__item-link" >
+                <span>{town.name}</span>
               </Link>
             </div>
           </section>

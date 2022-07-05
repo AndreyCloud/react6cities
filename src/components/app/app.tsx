@@ -44,8 +44,8 @@ function App({cities}: AppProps): JSX.Element {
   return (
     <Routes>
       <Route path="/" element= {<Main cities={cities}/>}/>
-      <Route path="/favorites" element= {auth ? favorPab : <Login/>}/>
-      <Route path="/login" element= {auth ? <Main cities={cities}/> : <Login />}/>
+      <Route path="/favorites" element= {auth ? favorPab : <Login cities={cities}/>}/>
+      <Route path="/login" element= {auth ? <Main cities={cities}/> : <Login cities={cities}/>}/>
       <Route path="/offer/:id" element= {<Offer />}/>
       <Route path="*" element= {<ErrorPage />}/>
     </Routes>
