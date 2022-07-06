@@ -9,6 +9,8 @@ type CommentItemProps = {
 function ReviewsItem({rev}: CommentItemProps): JSX.Element {
 
   const date = new Date(rev.date).toDateString();
+  const dateArray = date.split(' ');
+  const dateMY = `${dateArray[1]  } ${  dateArray[3]}`;
 
   const ratingStars = (() => {
     if(rev.rating) {
@@ -39,7 +41,7 @@ function ReviewsItem({rev}: CommentItemProps): JSX.Element {
           <p className="reviews__text">
             {rev.comment}
           </p>
-          <time className="reviews__time" dateTime="2019-04-24">{date}</time>
+          <time className="reviews__time" dateTime="2019-04-24">{dateMY}</time>
         </div>
       </li>
     </div>

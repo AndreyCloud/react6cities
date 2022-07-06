@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/useApps';
 import { chooseCity } from '../../store/citySlice';
 import { fetchLogin } from '../../store/userSlice';
 import { Cities } from '../../types/types';
+import Loading from '../Loading/Loading';
 
 type LoginProps = {
   cities: Cities;
@@ -77,13 +78,16 @@ function Login({cities}: LoginProps): JSX.Element {
   const user = {email, password};
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.user.error);
+  const loading = useAppSelector((state) => state.user.loadingUser);
   const navigate = useNavigate();
   const goMain = () => navigate('/');
 
   function sendLogin(e: { preventDefault: () => void; })  {
     e.preventDefault();
     dispatch(fetchLogin(user));
-    goMain();
+    if(!error && loading) {
+      goMain();
+    }
   }
 
   function SetCity(city: string) {
@@ -151,6 +155,7 @@ function Login({cities}: LoginProps): JSX.Element {
               <Link to="/" onClick={() => SetCity(town.name)} className="locations__item-link" >
                 <span>{town.name}</span>
               </Link>
+              {loading && <Loading/>}
             </div>
           </section>
         </div>

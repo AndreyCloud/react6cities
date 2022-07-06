@@ -52,7 +52,7 @@ type UserState = {
   token: string,
   user: User,
   error: string | null,
-  loading: boolean,
+  loadingUser: boolean,
 }
 
 
@@ -60,7 +60,7 @@ const initialState: UserState = {
   token: '',
   user: {} as User,
   error: null,
-  loading: false,
+  loadingUser: false,
 };
 
 const userSlice = createSlice({
@@ -78,22 +78,23 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchLogin.pending, (state) => {
+        state.loadingUser = true;
         state.error = null;
       })
       .addCase(fetchLogin.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.loading = false;
+        state.loadingUser = false;
       })
       .addCase(fetchLoginToken.pending, (state) => {
         state.error = null;
       })
       .addCase(fetchLoginToken.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.loading = false;
+        state.loadingUser = false;
       })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.payload;
-        state.loading = false;
+        state.loadingUser = true;
       });
   },
 });

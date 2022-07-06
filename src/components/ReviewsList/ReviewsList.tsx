@@ -8,14 +8,17 @@ type ReviewsListProps = {
 };
 
 function ReviewsList({ idItem }: ReviewsListProps): JSX.Element {
+
   const comments = useAppSelector((state) => state.city.comments);
   const error = useAppSelector((state) => state.city.error);
+
+  const commentsSort = [...comments].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchHotelComments(idItem));
-  }, [idItem]);
+  }, [dispatch, idItem]);
 
   return (
     <>
@@ -25,7 +28,7 @@ function ReviewsList({ idItem }: ReviewsListProps): JSX.Element {
         <span className="reviews__amount">{comments.length}</span>
       </h2>
       <ul className="reviews__list">
-        {comments.map((review) => (
+        {commentsSort.map((review) => (
           <ReviewsItem rev={review} key={Math.random()} />
         ))}
       </ul>
